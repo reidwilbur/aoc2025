@@ -24,6 +24,33 @@ class Day2 {
           })
           .boxed();
     }
+
+    public Stream<Long> findInvalidIdsSeq() {
+      return LongStream.range(start, end + 1)
+          .filter(Range::isInvalidId)
+          .boxed();
+
+    }
+
+    static boolean isInvalidId(long id) {
+      var longStr = Long.toString(id);
+      for (int seqSize = 1; seqSize <= longStr.length() / 2; seqSize++) {
+        if (longStr.length() % seqSize == 0) {
+          boolean isInvalid = true;
+          var seq = longStr.substring(0, seqSize);
+          for (int ofs = seqSize; ofs <= longStr.length() - seqSize; ofs += seqSize) {
+            if (!longStr.substring(ofs, ofs + seqSize).equals(seq)) {
+              isInvalid = false;
+              break;
+            }
+          }
+          if (isInvalid) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
   }
 
   public static long findInvalidIds(List<String> input) {
@@ -34,4 +61,11 @@ class Day2 {
         .sum();
   }
 
+  public static long findInvalidIdsSeq(List<String> input) {
+    return Arrays.stream(input.getFirst().split(","))
+        .map(Range::from)
+        .flatMap(Range::findInvalidIdsSeq)
+        .mapToLong(Long::valueOf)
+        .sum();
+  }
 }
