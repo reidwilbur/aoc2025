@@ -13,7 +13,7 @@ class Day1 {
       var clicks = Integer.parseInt(instr.substring(1));
       if (instr.charAt(0) == 'L') {
         pos = (pos - clicks) % DIAL_SIZE;
-        pos = (pos < 0) ? pos + DIAL_SIZE: pos;
+        pos = (pos < 0) ? pos + DIAL_SIZE : pos;
       } else {
         pos = (pos + clicks) % DIAL_SIZE;
       }
