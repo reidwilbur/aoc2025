@@ -19,4 +19,22 @@ public class Day3Test {
   void testGetMaxJoltage_puzzle() {
     assertThat(Day3.getTotalJoltage(PUZZLE_INPUT)).isEqualTo(17207L);
   }
+
+  @Test
+  void testGetMaxJoltageOverride() {
+    assertThat(Day3.getMaxJoltageOverride("987654321111111")).isEqualTo(987654321111L);
+    assertThat(Day3.getMaxJoltageOverride("811111111111119")).isEqualTo(811111111119L);
+    assertThat(Day3.getMaxJoltageOverride("234234234234278")).isEqualTo(434234234278L);
+    assertThat(Day3.getMaxJoltageOverride("818181911112111")).isEqualTo(888911112111L);
+  }
+
+  @Test
+  void testGetMaxJoltageOverride_test() {
+    assertThat(Day3.getTotalJoltageOverride(TEST_INPUT)).isEqualTo(3121910778619L);
+  }
+
+  @Test
+  void testGetMaxJoltageOverride_puzzle() {
+    assertThat(Day3.getTotalJoltageOverride(PUZZLE_INPUT)).isEqualTo(170997883706617L);
+  }
 }
