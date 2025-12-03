@@ -15,21 +15,21 @@ class Day2 {
 
     public Stream<Long> findInvalidIds() {
       return LongStream.range(start, end + 1)
-          .filter(id -> {
-            var intStr = Long.toString(id);
-            if (intStr.length() % 2 == 0) {
-              return intStr.substring(0, intStr.length() / 2).equals(intStr.substring(intStr.length() / 2));
-            }
-            return false;
-          })
+          .filter(
+              id -> {
+                var intStr = Long.toString(id);
+                if (intStr.length() % 2 == 0) {
+                  return intStr
+                      .substring(0, intStr.length() / 2)
+                      .equals(intStr.substring(intStr.length() / 2));
+                }
+                return false;
+              })
           .boxed();
     }
 
     public Stream<Long> findInvalidIdsSeq() {
-      return LongStream.range(start, end + 1)
-          .filter(Range::isInvalidId)
-          .boxed();
-
+      return LongStream.range(start, end + 1).filter(Range::isInvalidId).boxed();
     }
 
     static boolean isInvalidId(long id) {
