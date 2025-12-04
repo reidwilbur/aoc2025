@@ -19,4 +19,14 @@ public class Day4Test {
   void testGetLiftableRollCount_puzzle() {
     assertThat(Day4.getLiftableRollCount(PUZZLE_INPUT)).isEqualTo(1480L);
   }
+
+  @Test
+  void testGetRemovableRollCount_test() {
+    assertThat(Day4.getRemovableRollCount(TEST_INPUT)).isEqualTo(43L);
+  }
+
+  @Test
+  void testGetRemovableRollCount_puzzle() {
+    assertThat(Day4.getRemovableRollCount(PUZZLE_INPUT)).isEqualTo(8899L);
+  }
 }
