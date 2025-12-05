@@ -2,7 +2,6 @@ package com.wilb0t.aoc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class Day5Test {
@@ -18,5 +17,15 @@ public class Day5Test {
   @Test
   void testGetFreshIngredients_puzzle() {
     assertThat(Day5.getFreshIngredients(PUZZLE_INPUT)).isEqualTo(874L);
+  }
+
+  @Test
+  void testGetTotalFreshIngredients_test() {
+    assertThat(Day5.getTotalFreshIngredients(TEST_INPUT)).isEqualTo(14L);
+  }
+
+  @Test
+  void testGetTotalFreshIngredients_puzzle() {
+    assertThat(Day5.getTotalFreshIngredients(PUZZLE_INPUT)).isEqualTo(348548952146313L);
   }
 }

@@ -1,10 +1,8 @@
 package com.wilb0t.aoc;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 class Day5 {
 
@@ -18,6 +16,10 @@ class Day5 {
 
     public boolean isFresh(long ingredient) {
       return ingredient >= start && ingredient <= end;
+    }
+
+    public long count() {
+      return end - start + 1;
     }
   }
 
@@ -43,5 +45,23 @@ class Day5 {
     return input.ingredients.stream()
         .filter(ingredient -> input.ranges.stream().anyMatch(r -> r.isFresh(ingredient)))
         .count();
+  }
+
+  public static long getTotalFreshIngredients(Input input) {
+    var sortedRanges =
+        input.ranges.stream().sorted(Comparator.comparing(FreshRange::start)).toList();
+    var mergedRanges = new ArrayList<FreshRange>();
+    var curRange = sortedRanges.getFirst();
+    for (var idx = 1; idx < sortedRanges.size(); idx++) {
+      var next = sortedRanges.get(idx);
+      if (next.start <= curRange.end) {
+        curRange = new FreshRange(curRange.start, Math.max(curRange.end, next.end));
+      } else {
+        mergedRanges.add(curRange);
+        curRange = next;
+      }
+    }
+    mergedRanges.add(curRange);
+    return mergedRanges.stream().mapToLong(FreshRange::count).sum();
   }
 }
