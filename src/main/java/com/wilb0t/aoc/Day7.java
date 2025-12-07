@@ -1,11 +1,10 @@
 package com.wilb0t.aoc;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
 
 class Day7 {
 
@@ -30,22 +29,50 @@ class Day7 {
     queue.add(startPos);
     while (!queue.isEmpty()) {
       var curr = queue.removeFirst();
-      if (!visited.contains(curr)) {
+      if (curr.isValid(rows, cols) && !visited.contains(curr)) {
         visited.add(curr);
         if (input.get(curr.row).charAt(curr.col) == '^') {
           splits.add(curr);
-          Stream.of(new Coord(curr.row, curr.col - 1), new Coord(curr.row, curr.col + 1))
-              .filter(c -> c.isValid(rows, cols))
-              .forEach(queue::add);
+          queue.add(new Coord(curr.row, curr.col - 1));
+          queue.add(new Coord(curr.row, curr.col + 1));
         } else {
-          var next = new Coord(curr.row + 1, curr.col);
-          if (next.isValid(rows, cols)) {
-            queue.add(next);
-          }
+          queue.add(new Coord(curr.row + 1, curr.col));
         }
       }
     }
 
     return splits.size();
+  }
+
+  public static long getPathCount(List<String> input) {
+    var startCol = input.getFirst().indexOf('S');
+    if (startCol == -1) {
+      throw new RuntimeException("invalid map");
+    }
+    var startPos = new Coord(0, startCol);
+    var cache = new HashMap<Coord, Long>();
+    return getPathCount(cache, input, startPos);
+  }
+
+  public static long getPathCount(Map<Coord, Long> cache, List<String> input, Coord pos) {
+    var rows = input.size();
+    var cols = input.getFirst().length();
+    if (cache.containsKey(pos)) {
+      return cache.get(pos);
+    }
+    if (!pos.isValid(rows, cols)) {
+      return 1;
+    }
+    if (input.get(pos.row).charAt(pos.col) == '^') {
+      var left = getPathCount(cache, input, new Coord(pos.row, pos.col - 1));
+      var right = getPathCount(cache, input, new Coord(pos.row, pos.col + 1));
+      var count = left + right;
+      cache.put(pos, count);
+      return count;
+    } else {
+      var count = getPathCount(cache, input, new Coord(pos.row + 1, pos.col));
+      cache.put(pos, count);
+      return count;
+    }
   }
 }

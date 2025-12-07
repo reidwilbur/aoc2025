@@ -19,4 +19,14 @@ public class Day7Test {
   void testGetBeamSplitCount_puzzle() {
     assertThat(Day7.getBeamSplitCount(PUZZLE_INPUT)).isEqualTo(1619L);
   }
+
+  @Test
+  void testGetPathCount_test() {
+    assertThat(Day7.getPathCount(TEST_INPUT)).isEqualTo(40L);
+  }
+
+  @Test
+  void testGetPathCount_puzzle() {
+    assertThat(Day7.getPathCount(PUZZLE_INPUT)).isEqualTo(23607984027985L);
+  }
 }
