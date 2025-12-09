@@ -35,26 +35,19 @@ class Day8 {
         pairs.add(new Pair(first, second, first.dist(second)));
       }
     }
-    var circuit = 0;
+
     var circuits = new HashMap<Coord, Integer>();
+    for (var idx = 0; idx < coords.size(); idx++) {
+      circuits.put(coords.get(idx), idx);
+    }
+
     for (var round = 0; round < rounds; round++) {
       var pair = pairs.poll();
-      if (circuits.containsKey(pair.first) && circuits.containsKey(pair.second)) {
-        var cf = circuits.get(pair.first);
-        var cs = circuits.get(pair.second);
-        var union =
-            circuits.entrySet().stream()
-                .filter(e -> e.getValue().equals(cf) || e.getValue().equals(cs))
-                .toList();
-        for (var coord : union) {
-          circuits.put(coord.getKey(), circuit);
-        }
-        circuit += 1;
-      } else {
-        var c = circuits.getOrDefault(pair.first, circuits.getOrDefault(pair.second, circuit));
-        circuits.put(pair.first, c);
-        circuits.put(pair.second, c);
-        circuit += (c == circuit) ? 1 : 0;
+      var cf = circuits.get(pair.first);
+      var cs = circuits.get(pair.second);
+      var union = circuits.entrySet().stream().filter(e -> e.getValue().equals(cs)).toList();
+      for (var coord : union) {
+        circuits.put(coord.getKey(), cf);
       }
     }
 
@@ -71,5 +64,39 @@ class Day8 {
       mul *= size;
     }
     return mul;
+  }
+
+  public static long getSingleCircuitMul(List<String> input) {
+    var coords = input.stream().map(Coord::from).toList();
+    var pairs = new PriorityQueue<>(Comparator.comparing(Pair::dist));
+    for (var idx = 0; idx < coords.size() - 1; idx++) {
+      var first = coords.get(idx);
+      for (var sidx = idx + 1; sidx < input.size(); sidx++) {
+        var second = coords.get(sidx);
+        pairs.add(new Pair(first, second, first.dist(second)));
+      }
+    }
+
+    var circuits = new HashMap<Coord, Integer>();
+    for (var idx = 0; idx < coords.size(); idx++) {
+      circuits.put(coords.get(idx), idx);
+    }
+
+    for (var round = 0; round < pairs.size(); round++) {
+      var pair = pairs.poll();
+      var cf = circuits.get(pair.first);
+      var cs = circuits.get(pair.second);
+      var union =
+          circuits.entrySet().stream()
+              .filter(e -> e.getValue().equals(cf) || e.getValue().equals(cs))
+              .toList();
+      if (union.size() == circuits.size()) {
+        return (long) pair.first.x * (long) pair.second.x;
+      }
+      for (var coord : union) {
+        circuits.put(coord.getKey(), cf);
+      }
+    }
+    throw new RuntimeException("somethin wrong boss");
   }
 }

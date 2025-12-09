@@ -19,4 +19,14 @@ public class Day8Test {
   void testGetCircuitSizeMul_puzzle() {
     assertThat(Day8.getCircuitSizeMul(PUZZLE_INPUT, 1000)).isEqualTo(153328L);
   }
+
+  @Test
+  void testGetSingleCircuitMul_test() {
+    assertThat(Day8.getSingleCircuitMul(TEST_INPUT)).isEqualTo(25272L);
+  }
+
+  @Test
+  void testGetSingleCircuitMul_puzzle() {
+    assertThat(Day8.getSingleCircuitMul(PUZZLE_INPUT)).isEqualTo(6095621910L);
+  }
 }
